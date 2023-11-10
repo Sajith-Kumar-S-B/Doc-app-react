@@ -1,9 +1,35 @@
 import React from 'react'
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import Nav from '../components/Nav bar/Nav';
+import Dashboard from './Dashboard/Dashboard';
 
-function Home(props) {
+function Home({userName,isLoggedIn,setIsLoggedIn,setUserData,userData}) {
+    const navigate = useNavigate()
+
+
+  const Logout = () => {
+    signOut(auth).then(() => {
+      // Sign-out successful.
+      setUserData({})
+    
+      setIsLoggedIn(false)
+    }).catch((error) => {
+      // An error happened.
+      console.log({ error });
+    });
+
+    navigate('/login')
+
+  }
+
+
+  
   return (
     <div>
-      <h3>{props.name? `Welcome - ${props.name} `: 'Login please'}</h3>
+      <Nav  isLoggedIn={isLoggedIn} Logout={Logout} userName={userName} userData={userData} />
+      <Dashboard/>
     </div>
   )
 }

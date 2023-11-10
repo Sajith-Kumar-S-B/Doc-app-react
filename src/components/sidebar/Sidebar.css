@@ -1,0 +1,85 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+  }
+  
+  .profile-card {
+    width: 300px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .profile-card__img img {
+    width: 100%;
+    border-radius: 50%;
+  }
+  
+  .profile-card__name {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .profile-card__txt {
+    margin-bottom: 15px;
+  }
+  
+  /* Style the strong tag inside profile-card__txt */
+  .profile-card__txt strong {
+    color: #ff5722;
+  }
+  
+  .profile-card-loc {
+    margin-bottom: 10px;
+  }
+  
+  /* Style the button inside profile-card-ctr */
+  .profile-card-ctr .profile-card__button {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Add hover effect to the button */
+  .profile-card-ctr .profile-card__button:hover {
+    background-color: #e64a19;
+  }
+
+
+  .modal{
+    width: 50%;
+    margin: 2rem auto;
+    background-color: #ccc;
+    padding: 2rem;
+  }
+
+  .modal_content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+
+  .modal_image{
+
+    display: flex;
+    flex-direction: column;
+  }
+  /* Add some responsive styling */
+  @media screen and (max-width: 480px) {
+    .profile-card {
+      width: 100%;
+      max-width: 300px;
+    }
+
+}

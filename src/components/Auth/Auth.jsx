@@ -9,7 +9,7 @@ import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndP
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 
-function Auth({ register, history, UI }) {
+function Auth({ register,setIsLoggedIn,setUserData,}) {
 
   const navigate = useNavigate()
   const isRegisterForm = register ? true : false;
@@ -21,14 +21,13 @@ function Auth({ register, history, UI }) {
   });
   const [error, setError] = useState("");
   const [buttonDisable, setButtonDisable] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [userData, setUserData] = useState({})
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if ((isRegisterForm && !values.name) || !values.email || !values.password) {
+    if (isRegisterForm && !values.name || !values.email || !values.password) {
       setError("Fill all fields");
-    } else if ((!isRegisterForm && !values.email) || !values.password) {
+    } else if (!isRegisterForm && !values.email || !values.password) {
       setError("Fill all fields");
     }
     setError("");
@@ -40,22 +39,25 @@ function Auth({ register, history, UI }) {
       await updateProfile(user, {
         displayName: values.username,
       });
+      
+      setIsLoggedIn(true)
+
         navigate('/')
     })
     .catch((err) => {
       setButtonDisable(false);
 
-      setError(err.message.substring(9));
+      setError(err.message?.substring(9));
     });}
 
      {!isRegisterForm && signInWithEmailAndPassword(auth, values.email, values.password).then(async(res) => {
       setButtonDisable(false);
-     
+
         navigate('/')
     }).catch((err) => {
       setButtonDisable(false);
 
-      setError(err.message.substring(9));
+      setError(err.message?.substring(9));
     });
     
     
@@ -73,14 +75,18 @@ function Auth({ register, history, UI }) {
 
         const { displayName, email } = result.user;
         setUserData({ displayName, email })
-
+         
         setIsLoggedIn(true)
+        navigate('/')
       }).catch((error) => {
 
         console.log({ error });
 
       });
   }
+
+
+  
 
 
   return (
@@ -188,7 +194,7 @@ function Auth({ register, history, UI }) {
             )}
    <hr />
    <br />
-<button   onClick={SignUpUsingGoogle}  type="button" className={styles.loginGoogle} >
+      <button   onClick={SignUpUsingGoogle}  type="button" className={styles.loginGoogle} >
           Sign in with Google
         </button>
 

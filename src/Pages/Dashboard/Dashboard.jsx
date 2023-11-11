@@ -1,15 +1,62 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Dashboard.module.css';
 import Document from '../../components/Document/Document';
+import {useAuth} from '../../AuthProvider'
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { firestore } from '../../firebase';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditIcon from '@mui/icons-material/Edit';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 function Dashboard() {
+
+  const {currentUser} = useAuth();
 
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [documents, setDocuments] = useState([]);
+  
   const [editingDocument, setEditingDocument] = useState(null);
 
-  const createNewDocument = () => {
-    setDocuments([...documents, { name: 'Document Name', content: '' }]);
-    setSelectedDocument(documents.length);
+
+
+  useEffect(() => {
+    // Fetch documents when the component mounts
+    if (currentUser) {
+      const fetchDocuments = async () => {
+
+        try{const documentsCollection = collection(firestore, `users/${currentUser.uid}/documents`); // Use the user's UID as the collection name
+        const documentsSnapshot = await getDocs(documentsCollection);
+        const documentsData = documentsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+         ...doc.data(),
+          
+        }));
+        setDocuments(documentsData);
+      }catch (error) {
+        console.log("Error fetching documents:", error);
+      }
+      };
+
+      fetchDocuments();
+    }
+  }, [currentUser]);
+
+
+  // const createNewDocument = () => {
+  //   setDocuments([...documents, { name: 'Document Name', content: '' }]);
+  //   setSelectedDocument(null);
+  // };
+
+  const createNewDocument = async () => {
+    if (currentUser) {
+      const newDocument = { name: 'Document Name', content: 'Default content goes here' };
+
+      // Add the new document to Firestore
+      const documentsCollection = collection(firestore, `users/${currentUser.uid}/documents`);
+      const newDocumentRef = await addDoc(documentsCollection, newDocument);
+
+      setDocuments([...documents, { id: newDocumentRef.id, ...newDocument }]);
+      setSelectedDocument(null);
+    }
   };
   const handleDocumentClick = (index) => {
     if (index !== selectedDocument) {
@@ -25,12 +72,30 @@ function Dashboard() {
   const handleDocumentNameChange = (index, newName) => {
     const updatedDocuments = [...documents];
     updatedDocuments[index].name = newName;
+    const documentIdToUpdate = updatedDocuments[index].id;
+    const documentRef = doc(firestore, `users/${currentUser.uid}/documents`, documentIdToUpdate);
+    updateDoc(documentRef, { name: newName });
     setDocuments(updatedDocuments);
+  };
+
+
+
+  const handleDeleteButtonClick = async(index) => {
+    const updatedDocuments = [...documents];
+    const documentIdToDelete = updatedDocuments[index].id
+    await deleteDoc(doc(firestore, `users/${currentUser.uid}/documents`, documentIdToDelete));
+    if (selectedDocument === index) {
+      setSelectedDocument(null);
+    }
+    updatedDocuments.splice(index, 1);
+    setDocuments(updatedDocuments);
+    setEditingDocument(null); 
+    
   };
   return (
     <div className={styles.dashboard}>
       <div className={styles.left}>
-      <button onClick={createNewDocument}>Add</button>
+      <AddCircleIcon onClick={createNewDocument}/>
          {documents.map((doc, index) => (
           <div
             key={index}
@@ -38,8 +103,9 @@ function Dashboard() {
             onClick={() => handleDocumentClick(index)}
             
           >
-           {index === editingDocument ? (
+           {editingDocument === index ? (
               <input
+              key={doc.id}
               className={styles.nameInput}
                 type="text"
                 value={doc.name}
@@ -50,7 +116,8 @@ function Dashboard() {
             ) : (
               <div>{doc.name}</div>
             )}
-             <button onClick={() => handleEditButtonClick(index)}>Edit</button>
+             <EditIcon fontSize='10px' onClick={() => handleEditButtonClick(index)}/>
+             <DeleteOutlineIcon onClick={() => handleDeleteButtonClick(index)}/>
           </div>
           
         ))}

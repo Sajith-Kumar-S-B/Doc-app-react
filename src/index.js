@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import 'firebase/compat/firestore';
 import { BrowserRouter } from 'react-router-dom';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { AuthProvider } from './AuthProvider';
 
 
 
@@ -13,7 +14,7 @@ import { BrowserRouter } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <BrowserRouter>  <App /></BrowserRouter>
+  <BrowserRouter> <AuthProvider> <App /></AuthProvider></BrowserRouter>
   </React.StrictMode>
 );
 

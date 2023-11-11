@@ -20,21 +20,38 @@ export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData
   const [show, setShow] = React.useState(false);
   const [image,setImage] = useState(null)
   const [url,setUrl] = useState(null)
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-  });
+  const [forceUpdate, setForceUpdate] = useState(false);
+  // const [formData, setFormData] = useState({
+  //   username: '',
+  //   email: '',
+  // });
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   
 
   React.useEffect(() => {
-    const storedURL = localStorage.getItem('profileImageURL');
+
+    const localStorageKey = `profileImageURL_${userData.uid}`;
+    console.log('Fetching image for user UID:', userData.uid);
+    const storedURL = localStorage.getItem(localStorageKey);
     if (storedURL) {
       setUrl(storedURL);
     }
-  }, []);
+
+    const imageRef = storageRef(storage, `images/${userData.uid}`);
+    
+    console.log('User UID:', userData.uid);
+    getDownloadURL(imageRef)
+      .then((url) => {
+        localStorage.setItem(localStorageKey, url);
+        setUrl(url);
+        setForceUpdate((prev) => !prev);
+      })
+      .catch((error) => {
+        console.error('Error fetching profile image URL:', error);
+      });
+  }, [userData.uid]);
 
   const handleImage = (e) => {
     if (e.target.files[0]) {
@@ -43,45 +60,54 @@ export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData
   };
 
   const handleImageSubmit = () => {
-    const imageRef = storageRef(storage, "images/" + userData.uid); 
+
+    console.log('Uploading image for user UID:', userData.uid);
+    console.log('Current image state:', image);
+    const imageRef = storageRef(storage, `images/${userData.uid}`); 
+   
     uploadBytes(imageRef, image).then(() => {
+      console.log('Image uploaded successfully.');
       getDownloadURL(imageRef).then((url) => {
-        localStorage.setItem('profileImageURL', url);
+        console.log('Image URL fetched successfully:', url);
+        const localStorageKey = `profileImageURL_${userData.uid}`;
+        localStorage.removeItem(localStorageKey);
+
+          localStorage.setItem(localStorageKey, url);
         setUrl(url);
         setImage(null);
       }).catch((err) => {
-        console.log(err.message);
+        console.log('Error fetching image URL:', err.message);
       });
     }).catch((err) => {
-      console.log(err.message);
+      console.log('Error uploading image:', err.message);
     });
   };
 
-  const saveProfileDataToFirebase = () => {
-    const database = getDatabase();
-    const userRef = ref(database, `users/${userData.uid}`); // Assuming you have a 'users' node
+  // const saveProfileDataToFirebase = () => {
+  //   const database = getDatabase();
+  //   const userRef = ref(database, `users/${userData.uid}`); // Assuming you have a 'users' node
 
-    const userDataToSave = {
-      username: formData.username,
-      email: formData.email,
-    };
+  //   const userDataToSave = {
+  //     username: formData.username,
+  //     email: formData.email,
+  //   };
 
-    set(userRef, userDataToSave)
-      .then(() => {
-        console.log('Data saved to Firebase successfully.');
-      })
-      .catch((error) => {
-        console.error('Error saving data to Firebase:', error);
-      });
-  };
+  //   set(userRef, userDataToSave)
+  //     .then(() => {
+  //       console.log('Data saved to Firebase successfully.');
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error saving data to Firebase:', error);
+  //     });
+  // };
 
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  // const handleFormChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [name]: value,
+  //   }));
+  // };
 
 
   const list = (anchor) => (
@@ -99,7 +125,7 @@ export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData
 
       <div className="profile-card__img">
         <Avatar>
-          <img src={url} alt="" />
+          <img key={forceUpdate} src={`${url}?${Math.random()}`} alt="" />
         </Avatar>
 
        
@@ -154,36 +180,11 @@ export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData
        <div className='modal_content'>
          <div className='modal_image'>
             <label  className='file' htmlFor='profile'> 
-                     <input  onChange={handleImage} id='profile'  type="file" />
-                     <img className='image' src={url || userImg}  width={'200px'}  alt="image" /></label>
+                     <input  onChange={handleImage} id='profile' style={{display:'none'}}  type="file" />
+                  <Avatar style={{width:'200px',height:"200px"}}>   <img className='image' key={forceUpdate} src={`${url}?${Math.random()}`}  width={'100%'}   /></Avatar></label>
                      <Button onClick={handleImageSubmit}>Add Image</Button>
          </div>
-                   <div>
-                     <TextField
-                  margin="normal"
-                  id="username"
-                  label="Username"
-                  autoFocus
-                  fullWidth
-                  required
-                  autoComplete="username"
-                  variant="outlined"
-                onChange={handleFormChange}
-                />
-  
-                <TextField
-                  margin="normal"
-                  id="email"
-                  label="Email"
-                  autoFocus
-                  fullWidth
-                  required
-                  autoComplete="email"
-                  variant="outlined"
-                  onChange={handleFormChange}
-
-                />
-                   </div>
+                   
        </div>
                 
         </Modal.Body>
@@ -192,7 +193,7 @@ export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData
             Close
           </Button>
           <Button  onClick={() => {
-              saveProfileDataToFirebase(); // Save profile data when clicking the "Save" button
+              // saveProfileDataToFirebase(); // Save profile data when clicking the "Save" button
               handleClose();
             }} variant="primary">Save</Button>
         </Modal.Footer>

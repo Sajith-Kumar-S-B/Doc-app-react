@@ -9,18 +9,21 @@ function Home({userName,isLoggedIn,setIsLoggedIn,setUserData,userData}) {
     const navigate = useNavigate()
 
 
-  const Logout = () => {
-    signOut(auth).then(() => {
-      // Sign-out successful.
-      setUserData({})
-    
-      setIsLoggedIn(false)
-    }).catch((error) => {
-      // An error happened.
-      console.log({ error });
-    });
-
-    navigate('/login')
+  const Logout = async () => {
+    console.log('Logging out user:', userData);
+     const localStorageKey = `profileImageURL_${userData.uid}`;
+  localStorage.removeItem(localStorageKey);
+  console.log(localStorageKey);
+  try {
+    await signOut(auth);
+    // Sign-out successful.
+    setUserData({});
+    setIsLoggedIn(false);
+    navigate('/login');
+  } catch (error) {
+    // An error happened.
+    console.error('Error during logout:', error.message);
+  }
 
   }
 

@@ -203,7 +203,7 @@ export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData
 
                   <div className="profile-card__name">{userData.displayName}</div>
           <div className="profile-card__txt">{userData.email}</div>
-                     <Button onClick={handleImageSubmit}>Add Image</Button>
+                     <Button style={{backgroundColor:'#6e84d0'}}  onClick={handleImageSubmit}>Add Image</Button>
 
          </div>
 
@@ -216,7 +216,7 @@ export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button  onClick={() => {
+          <Button style={{backgroundColor:'#6e84d0'}}  onClick={() => {
               // saveProfileDataToFirebase(); // Save profile data when clicking the "Save" button
               handleClose();
             }} variant="primary">Save</Button>

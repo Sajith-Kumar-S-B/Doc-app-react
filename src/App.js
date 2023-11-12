@@ -8,6 +8,9 @@ import Dashboard from './Pages/Dashboard/Dashboard';
 import Document from './components/Document/Document';
 import Sidebar from './components/sidebar/Sidebar';
 import Nav from './components/Nav bar/Nav';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+
 
 function App() {
 
@@ -64,6 +67,9 @@ function App() {
   
   
       </Routes>
+      <ToastContainer position='top-center'
+          autoClose={2000} />
+    
 
     </>
   );

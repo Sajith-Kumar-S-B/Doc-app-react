@@ -5,6 +5,7 @@ import './Document.css';
 import { collection, doc, updateDoc } from 'firebase/firestore';
 import { useAuth } from '../../AuthProvider';
 import { firestore } from '../../firebase';
+import { toast } from 'react-toastify';
 
 function Document({ documentIndex, documents, setDocuments,setSelectedDocument,darkMode }) {
   const { currentUser } = useAuth();
@@ -70,7 +71,12 @@ function Document({ documentIndex, documents, setDocuments,setSelectedDocument,d
             updatedDocuments[documentIndex] = { ...updatedDocuments[documentIndex], name, content };
             return updatedDocuments;
           });
-          alert('Document saved!');
+          toast.success('Document saved!');
+          setTimeout(()=>{
+            setSelectedDocument(null)
+          },1000)
+       
+
         }
       };
 

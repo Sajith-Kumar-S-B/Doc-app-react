@@ -116,7 +116,7 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
                 // helperText={errors.username}
                 fullWidth
                 required
-                focused
+               
                
                 className="textField"
                 autoComplete="username"

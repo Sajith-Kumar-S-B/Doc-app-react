@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import gifImg from '../../Assets/15-13-39-266_512.gif';
 import { useDarkMode } from '../../ModeContext';
+import { toast } from 'react-toastify';
 function Dashboard() {
 
   const {currentUser} = useAuth();
@@ -59,11 +60,14 @@ function Dashboard() {
 
       setDocuments([...documents, { id: newDocumentRef.id, ...newDocument }]);
       setSelectedDocument(null);
+      toast.info("New Document Added")
+
     }
   };
   const handleDocumentClick = (index) => {
     if (index !== selectedDocument) {
       setSelectedDocument(index);
+     
       setEditingDocument(null);
     }
   };
@@ -92,7 +96,7 @@ function Dashboard() {
     setSelectedDocument(null)
     setDocuments(updatedDocuments);
     setEditingDocument(null); 
-        
+     toast.error("document deleted")   
   };
 
 
@@ -105,7 +109,7 @@ function Dashboard() {
           <div
             key={index}
             className={`${styles.docfile} ${index === selectedDocument ? styles.selected : ''}`}
-            onClick={() => handleDocumentClick(index)}
+            
             
           >
            {editingDocument === index ? (
@@ -119,7 +123,7 @@ function Dashboard() {
               
               />
             ) : (
-              <div>{doc.name}</div>
+              <div onClick={() => handleDocumentClick(index)}>{doc.name}</div>
             )}
             <div>
                <EditIcon fontSize='10px' onClick={() => handleEditButtonClick(index)}/>

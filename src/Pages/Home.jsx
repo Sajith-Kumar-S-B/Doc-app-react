@@ -1,7 +1,7 @@
 import React from 'react'
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav bar/Nav';
 import Dashboard from './Dashboard/Dashboard';
 
@@ -32,7 +32,8 @@ function Home({userName,isLoggedIn,setIsLoggedIn,setUserData,userData}) {
   return (
     <div>
       <Nav  isLoggedIn={isLoggedIn} Logout={Logout} userName={userName} userData={userData} />
-      <Dashboard/>
+     { isLoggedIn ? (<Dashboard   userName={userName} userData={userData} />) : (<Navigate to="/login" replace /> )}
+
     </div>
   )
 }

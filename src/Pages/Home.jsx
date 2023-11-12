@@ -32,8 +32,7 @@ function Home({userName,isLoggedIn,setIsLoggedIn,setUserData,userData}) {
   return (
     <div>
       <Nav  isLoggedIn={isLoggedIn} Logout={Logout} userName={userName} userData={userData} />
-     { isLoggedIn ? (<Dashboard   userName={userName} userData={userData} />) : (<Navigate to="/login" replace /> )}
-
+      {isLoggedIn && <Dashboard   userName={userName} userData={userData} />}
     </div>
   )
 }

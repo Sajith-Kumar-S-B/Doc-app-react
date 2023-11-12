@@ -56,8 +56,7 @@ function App() {
        <Route path={'/'} element={<Home userName={userName} isLoggedIn={isLoggedIn} userData={userData} setIsLoggedIn={setIsLoggedIn} setUserData={setUserData} />} />
        <Route path={'/login'} element={<Auth setIsLoggedIn={setIsLoggedIn} setUserData={setUserData}  />} /> 
        <Route path={'/register'} element={<Auth  register setIsLoggedIn={setIsLoggedIn} setUserData={setUserData}  />} />
-       <Route path={'/dashboard'} element={
-        isLoggedIn ? (<Dashboard   userName={userName} userData={userData} />) : (<Navigate to="/login" replace /> )} />
+       <Route path={'/dashboard'} element={isLoggedIn &&<Dashboard   userName={userName} userData={userData} /> } />
          <Route path={'/document'} element={<Document/>} />
          <Route path={'/sidebar'} element={<Sidebar/>} />
          <Route path={'/nav'}  element={<Nav/>} />

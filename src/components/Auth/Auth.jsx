@@ -8,8 +8,11 @@ import styles from "./Auth.module.css";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import ModeToggle from "../../ModeToggle";
+import { useDarkMode } from "../../ModeContext";
 
 function Auth({ register,setIsLoggedIn,setUserData,}) {
+  // const { darkMode } = useDarkMode();
 
   const navigate = useNavigate()
   const isRegisterForm = register ? true : false;
@@ -90,9 +93,11 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
 
 
   return (
-    <>
-            <div className={styles.header}><h3><i class="fa-brands fa-dochub"></i>ocs.doc</h3></div>
-
+    <div className={styles.auth}>
+            <div className={styles.header}><h3><i class="fa-brands fa-dochub"></i>ocs.doc</h3>
+            {/* <ModeToggle/> */}
+            </div>
+          
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={styles.paper}>
@@ -111,6 +116,9 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
                 // helperText={errors.username}
                 fullWidth
                 required
+                focused
+               
+                className="textField"
                 autoComplete="username"
                 variant="outlined"
                 onChange={(e) =>
@@ -123,6 +131,8 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
               margin="normal"
               required
               fullWidth
+              className="textField"
+             
               id="email"
               label="Email Address"
               name="email"
@@ -139,6 +149,8 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
               margin="normal"
               required
               fullWidth
+              className="textField"
+
               name="password"
               label="Password"
               type="password"
@@ -203,7 +215,7 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
           </form>
         </div>
       </Container>
-    </>
+    </div>
   );
 }
 

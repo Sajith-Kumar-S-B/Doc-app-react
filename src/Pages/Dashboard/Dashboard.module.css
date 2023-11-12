@@ -7,7 +7,7 @@
       --clr-primary: #ffffff;
       --clr-lg:#000;
       --clr-mode:#ddd;
-
+      --clr-border:none;
 
    
   }
@@ -21,6 +21,7 @@
     --clr-primary: #36474f;
   --clr-lg:#fff;
   --clr-mode:#36474f;
+  --clr-border:#fff;
    
   }
 
@@ -30,7 +31,7 @@
     display: grid;
     grid-template-columns: 20% auto;
     width: 100%;
-    height: 91vh;
+    height: 91.8vh;
 
 }
 
@@ -40,6 +41,7 @@
     justify-content:flex-start;
     align-items: center;
     background-color: var(--clr-bg-alt);
+    border-right: 1px solid var(--clr-border);
     padding: 1rem;
     overflow-y: scroll;
 }
@@ -158,7 +160,7 @@
     }
 
     .docfile{
-        padding: 5px 10px;
+        padding: 10px 10px;
         font-size: smaller;
     }
 
@@ -176,6 +178,7 @@
     .dashboard{
         grid-template-columns: none;
         grid-row: inherit;
+        height: 91.3vh;
     }
 
     .left{
@@ -183,7 +186,7 @@
     }
 
     .docfile{
-        padding: 5px 10px;
+        padding: 10px 10px;
         font-size: smaller;
     }
 
@@ -191,6 +194,7 @@
         width: 100%;
         height: 100%;
         padding: 0;
+        border-radius: 0px;
     }
 
     .newDocument{

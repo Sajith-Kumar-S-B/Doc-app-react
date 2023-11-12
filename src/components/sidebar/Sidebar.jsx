@@ -127,7 +127,7 @@ export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData
          <div className='sidebar'>
           
   
-  {isLoggedIn &&
+  {isLoggedIn ?
     <div className="wrapper">
       
       <div className="profile-card js-profile-card">
@@ -157,7 +157,7 @@ export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData
       <div className="profile-card-ctr">
             <button className="profile-card__button button--orange" onClick={Logout}>Log out<LogoutIcon/> </button>
           </div>
-    </div>
+    </div> : <div className='wrapper'><h4>Please Login</h4></div>
   }
          </div>
      

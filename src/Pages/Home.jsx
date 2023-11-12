@@ -1,9 +1,10 @@
 import React from 'react'
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav bar/Nav';
 import Dashboard from './Dashboard/Dashboard';
+import { Button } from '@mui/material';
 
 function Home({userName,isLoggedIn,setIsLoggedIn,setUserData,userData}) {
     const navigate = useNavigate()
@@ -32,7 +33,10 @@ function Home({userName,isLoggedIn,setIsLoggedIn,setUserData,userData}) {
   return (
     <div>
       <Nav  isLoggedIn={isLoggedIn} Logout={Logout} userName={userName} userData={userData} />
-      {isLoggedIn && <Dashboard   userName={userName} userData={userData} />}
+      {isLoggedIn ? <Dashboard   userName={userName} userData={userData} />:
+      <div className='loginSec'>
+      <Button className='saveButton'> <Link style={{textDecoration:'none',color:'white'}} to={'/login'}> Login</Link></Button>
+        </div>}
     </div>
   )
 }

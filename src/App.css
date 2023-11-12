@@ -1,0 +1,25 @@
+
+
+.loginSec{
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.loginSec   .saveButton {
+    width: 100px;
+    background-color: #6e84d0; 
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: medium;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 5px;
+    box-shadow: rgba(116, 114, 114, 0.35) 0px -50px 36px -28px inset;
+  }

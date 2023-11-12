@@ -7,9 +7,12 @@ import { firestore } from '../../firebase';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import gifImg from '../../Assets/15-13-39-266_512.gif';
+import { useDarkMode } from '../../ModeContext';
 function Dashboard() {
 
   const {currentUser} = useAuth();
+  const { darkMode } = useDarkMode();
 
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [documents, setDocuments] = useState([]);
@@ -48,7 +51,7 @@ function Dashboard() {
 
   const createNewDocument = async () => {
     if (currentUser) {
-      const newDocument = { name: 'Document Name', content: 'Default content goes here' };
+      const newDocument = { name: 'Document Name', content: 'Enter Your Content & Save.' };
 
       // Add the new document to Firestore
       const documentsCollection = collection(firestore, `users/${currentUser.uid}/documents`);
@@ -84,18 +87,20 @@ function Dashboard() {
     const updatedDocuments = [...documents];
     const documentIdToDelete = updatedDocuments[index].id
     await deleteDoc(doc(firestore, `users/${currentUser.uid}/documents`, documentIdToDelete));
-    if (selectedDocument === index) {
-      setSelectedDocument(null);
-    }
     updatedDocuments.splice(index, 1);
+
+    setSelectedDocument(null)
     setDocuments(updatedDocuments);
     setEditingDocument(null); 
-    
+        
   };
+
+
+
+
   return (
-    <div className={styles.dashboard}>
+    <div className={`${styles.dashboard} ${darkMode ? styles['dark-mode'] : styles['light-mode'] }`}>
       <div className={styles.left}>
-      <AddCircleIcon onClick={createNewDocument}/>
          {documents.map((doc, index) => (
           <div
             key={index}
@@ -116,21 +121,30 @@ function Dashboard() {
             ) : (
               <div>{doc.name}</div>
             )}
-             <EditIcon fontSize='10px' onClick={() => handleEditButtonClick(index)}/>
-             <DeleteOutlineIcon onClick={() => handleDeleteButtonClick(index)}/>
+            <div>
+               <EditIcon fontSize='10px' onClick={() => handleEditButtonClick(index)}/>
+               <DeleteOutlineIcon onClick={() => handleDeleteButtonClick(index)}/>
+            </div>
           </div>
           
         ))}
       </div>
       <div className={styles.right}>
         <div className={styles.rightcontent}>
-          {selectedDocument !== null && (
+          {selectedDocument !== null ? (
             <Document
+            darkMode={darkMode}
               documentIndex={selectedDocument}
               documents={documents}
+              setSelectedDocument={setSelectedDocument}
               setDocuments={setDocuments}
             />
-          )}
+          ):<div className={styles.newDocument}>
+           
+            <img onClick={createNewDocument}   src={gifImg} alt="" />
+            <h5 className={styles.textAdd}> <AddCircleIcon fontSize='large' className={styles.newDoc} onClick={createNewDocument}/>
+Add New Document</h5>
+            </div>}
         </div>
       </div>
     </div>

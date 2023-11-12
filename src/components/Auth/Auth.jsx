@@ -91,10 +91,12 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
 
   return (
     <>
+            <div className={styles.header}><h3><i class="fa-brands fa-dochub"></i>ocs.doc</h3></div>
+
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={styles.paper}>
-          <Avatar className="avatar">
+          <Avatar style={{backgroundColor:'#be4d25'}} className={styles.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           {isRegisterForm ? <h5>Register</h5> : <h5>Login</h5>}
@@ -149,19 +151,7 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
               }
             />
 
-            {isRegisterForm && (
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                id="confirmPassword"
-                autoComplete="current-password"
-              />
-            )}
+            
 
             <b className="error">{error}</b>
             {isRegisterForm ? (
@@ -169,7 +159,7 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="primary"
+              
                 className={styles.submit}
                 onClick={handleSubmit}
                 disabled={buttonDisable}
@@ -182,7 +172,7 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="primary"
+               
                 className={styles.submit}
                 onClick={handleSubmit}
                 disabled={buttonDisable}
@@ -201,9 +191,9 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
             <Grid container>
               <Grid item>
                 {isRegisterForm ? (
-                  <Link href="/login">{"Already have  an account? Login"}</Link>
+                  <Link style={{textDecoration:'none'}} href="/login">{"Already have  an account? Login"}</Link>
                 ) : (
-                  <Link href="/register">
+                  <Link style={{textDecoration:'none'}} href="/register">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 )}

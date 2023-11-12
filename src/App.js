@@ -7,12 +7,16 @@ import { auth } from './firebase';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import Document from './components/Document/Document';
 import Sidebar from './components/sidebar/Sidebar';
+import Nav from './components/Nav bar/Nav';
 
 function App() {
+
+  
+
+ 
   const [userName,setUserName] = useState("")
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userData, setUserData] = useState({})
-
 
   useEffect(()=>{
    const unsubscribe = auth.onAuthStateChanged((user)=>{
@@ -40,23 +44,28 @@ function App() {
 
   },[])
 
+  
 
 
   
   return (
     <>
 
-<Routes>
-     <Route path={'/'} element={<Home userName={userName} isLoggedIn={isLoggedIn} userData={userData} setIsLoggedIn={setIsLoggedIn} setUserData={setUserData} />} />
-     <Route path={'/login'} element={<Auth setIsLoggedIn={setIsLoggedIn} setUserData={setUserData}  />} /> 
-     <Route path={'/register'} element={<Auth  register setIsLoggedIn={setIsLoggedIn} setUserData={setUserData}  />} />
-     <Route path={'/dashboard'} element={
-      isLoggedIn ? (<Dashboard  userName={userName} userData={userData} />) : (<Navigate to="/login" replace /> )} />
-       <Route path={'/document'} element={<Document/>} />
-       <Route path={'/sidebar'} element={<Sidebar/>} />
 
+  <Routes>
+       <Route path={'/'} element={<Home userName={userName} isLoggedIn={isLoggedIn} userData={userData} setIsLoggedIn={setIsLoggedIn} setUserData={setUserData} />} />
+       <Route path={'/login'} element={<Auth setIsLoggedIn={setIsLoggedIn} setUserData={setUserData}  />} /> 
+       <Route path={'/register'} element={<Auth  register setIsLoggedIn={setIsLoggedIn} setUserData={setUserData}  />} />
+       <Route path={'/dashboard'} element={
+        isLoggedIn ? (<Dashboard   userName={userName} userData={userData} />) : (<Navigate to="/login" replace /> )} />
+         <Route path={'/document'} element={<Document/>} />
+         <Route path={'/sidebar'} element={<Sidebar/>} />
+         <Route path={'/nav'}  element={<Nav/>} />
+  
+  
+  
+      </Routes>
 
-    </Routes>
     </>
   );
 }

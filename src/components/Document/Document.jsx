@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import './Document.css';
@@ -6,7 +6,7 @@ import { collection, doc, updateDoc } from 'firebase/firestore';
 import { useAuth } from '../../AuthProvider';
 import { firestore } from '../../firebase';
 
-function Document({ documentIndex, documents, setDocuments }) {
+function Document({ documentIndex, documents, setDocuments,setSelectedDocument,darkMode }) {
   const { currentUser } = useAuth();
     const module = {
         toolbar: [
@@ -73,9 +73,17 @@ function Document({ documentIndex, documents, setDocuments }) {
           alert('Document saved!');
         }
       };
+
+
+      const handleBack = ()=>{
+        setSelectedDocument(null)
+      }
+
+
+      
       
   return (
-    <div className='container'>
+    <div className={`container ${darkMode ? 'dark-mode' : 'light-mode'}`}>
         <ReactQuill
         className='ql-toolbar'
         theme="snow"
@@ -87,7 +95,11 @@ function Document({ documentIndex, documents, setDocuments }) {
         modules={module}
         formats={formats}
       />
-      <button  onClick={() => handleSave(content)}  className='saveBtn'>Save</button>
+      <div className='buttons'>
+        <button  onClick={() => handleSave(content)}  className='saveBtn'>Save</button>
+        <button onClick={handleBack}   className='saveBtn'>Back</button>
+      </div>
+
 
 
     </div>

@@ -5,6 +5,7 @@ import Divider from '@mui/material/Divider';
 import './Sidebar.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { TextField } from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 import Avatar from "@mui/material/Avatar";
 import Button from 'react-bootstrap/Button';
@@ -12,11 +13,15 @@ import Modal from 'react-bootstrap/Modal';
 import userImg from '../../Assets/147142.png'
 import { useState } from 'react';
 import { getDatabase,ref ,set } from 'firebase/database'; 
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { ref as storageRef,uploadBytes,getDownloadURL } from 'firebase/storage';
 import { storage } from '../../firebase';
+import { useDarkMode } from '../../ModeContext';
 export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData,Logout}) {
-   
+
+
+  const { darkMode } = useDarkMode();
+
   const [show, setShow] = React.useState(false);
   const [image,setImage] = useState(null)
   const [url,setUrl] = useState(null)
@@ -112,50 +117,61 @@ export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 300 }}
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
+      className={`sidebar-con ${darkMode ? 'dark-mode' : 'light-mode'}`}
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
-    >
-         <h3>{isLoggedIn && userName? `Welcome - ${userName} `: 'Login please'}</h3>
-
-{isLoggedIn &&
-  <div className="wrapper">
-    <div className="profile-card js-profile-card">
-
-      <div className="profile-card__img">
-        <Avatar>
-          <img key={forceUpdate} src={`${url}?${Math.random()}`} alt="" />
-        </Avatar>
-
-       
-      </div>
-
-      <div className="profile-card__cnt js-profile-cnt">
-        <div className="profile-card__name">{userData.displayName}</div>
-        <div className="profile-card__txt">{userData.email}</div>
-        <div onClick={handleShow} className="profile-card-loc">
-           Profile
-        </div>
-        <div className="profile-card-ctr">
-          <button className="profile-card__button button--orange" onClick={Logout}>Log out</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-}
      
+    >
+         <div className='sidebar'>
+          
+  
+  {isLoggedIn &&
+    <div className="wrapper">
+      
+      <div className="profile-card js-profile-card">
+      <h4 className='welcome'>{isLoggedIn && userName? `Welcome - ${userName} `: 'Please Login'}</h4>
+        <div className="profile-card__img">
+          <Avatar style={{width:'100%',height:'100%'}}>
+            <img style={{width:'100%',height:'100%'}}  key={forceUpdate} src={`${url}?${Math.random()}`} alt="" />
+          </Avatar>
+  
+         
+        </div>
+  
+        <div className="profile-card__cnt js-profile-cnt">
+          <div className="profile-card__name">{userData.displayName}</div>
+          <div className="profile-card__txt">{userData.email}</div>
+          
+        
+        </div>
+        <div onClick={handleShow} className="profile-card-loc">
+              <AccountCircleIcon/> Profile
+          </div>
+  
+      </div>
       <Divider />
+     
+      
+      <div className="profile-card-ctr">
+            <button className="profile-card__button button--orange" onClick={Logout}>Log out<LogoutIcon/> </button>
+          </div>
+    </div>
+  }
+         </div>
+     
+    
 
     </Box>
 
   );
 
   return (
-    <div>
+    <div >
       {['left'].map((anchor) => (
-        <React.Fragment key={anchor}>
+        <React.Fragment   
+        key={anchor}>
           <Drawer
             anchor={anchor}
             open={state[anchor]}
@@ -181,9 +197,17 @@ export default function Sidebar({state,toggleDrawer,userName,isLoggedIn,userData
          <div className='modal_image'>
             <label  className='file' htmlFor='profile'> 
                      <input  onChange={handleImage} id='profile' style={{display:'none'}}  type="file" />
+                 
                   <Avatar style={{width:'200px',height:"200px"}}>   <img className='image' key={forceUpdate} src={`${url}?${Math.random()}`}  width={'100%'}   /></Avatar></label>
+
+
+                  <div className="profile-card__name">{userData.displayName}</div>
+          <div className="profile-card__txt">{userData.email}</div>
                      <Button onClick={handleImageSubmit}>Add Image</Button>
+
          </div>
+
+       
                    
        </div>
                 

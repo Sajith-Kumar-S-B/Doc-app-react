@@ -7,7 +7,10 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidebar from '../sidebar/Sidebar';
-function Nav({userName,isLoggedIn,userData,Logout}) {
+import LogoutIcon from '@mui/icons-material/Logout';
+import ModeToggle from '../../ModeToggle';
+
+function Nav({userName,isLoggedIn,userData,Logout,darkMode,setDarkMode}) {
     const [state, setState] = React.useState({
         left: false
        
@@ -20,9 +23,15 @@ function Nav({userName,isLoggedIn,userData,Logout}) {
     
         setState({ ...state, [anchor]: open });
       };
+
+      const toggleMode = () => {
+        setDarkMode(!darkMode);
+      };
+    
+      
   return (
-    <Box sx={{ flexGrow: 1 }}>
-    <AppBar position="static">
+    <Box   sx={{ flexGrow: 1 }}>
+    <AppBar style={{backgroundColor:'#6e84d0'}} position="static">
       <Toolbar>
         <IconButton
           size="large"
@@ -35,9 +44,10 @@ function Nav({userName,isLoggedIn,userData,Logout}) {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          News
+        <i class="fa-brands fa-dochub"></i>ocs.doc
         </Typography>
-        <Button onClick={Logout} color="inherit">Logout</Button>
+        <ModeToggle/>
+        <Button style={{display:'inline-flex',justifyContent:'center',alignItems:'center',gap:'5px',textTransform:'none',fontSize:'large'}} onClick={Logout} color="inherit"><span>Logout</span><LogoutIcon/></Button>
       </Toolbar>
     </AppBar>
     <Sidebar Logout={Logout} userName={userName} userData={userData} isLoggedIn={isLoggedIn} state={state} setState={setState} toggleDrawer={toggleDrawer} />

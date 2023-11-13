@@ -31,7 +31,7 @@ function Home({userName,isLoggedIn,setIsLoggedIn,setUserData,userData}) {
 
   
   return (
-    <div>
+    <div className='home'>
       <Nav  isLoggedIn={isLoggedIn} Logout={Logout} userName={userName} userData={userData} />
       {isLoggedIn ? <Dashboard   userName={userName} userData={userData} />:
       <div className='loginSec'>

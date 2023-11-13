@@ -1,5 +1,13 @@
 
 
+.home{
+    height: 91.8vh;
+    width: 100%;
+
+}
+
+
+
 .loginSec{
 
     position: absolute;
@@ -23,3 +31,17 @@
     border-radius: 5px;
     box-shadow: rgba(116, 114, 114, 0.35) 0px -50px 36px -28px inset;
   }
+
+
+@media (max-width:700px) {
+    .home{
+        height: 92vh;
+    }
+}
+
+
+@media (max-width:576px) {
+    .home{
+        height: 92vh;
+    }
+}

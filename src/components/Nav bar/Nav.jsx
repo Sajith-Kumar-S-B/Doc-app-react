@@ -30,7 +30,7 @@ function Nav({userName,isLoggedIn,userData,Logout,darkMode,setDarkMode}) {
      
       
   return (
-    <Box   sx={{ flexGrow: 1 }}>
+    <Box width={'100%'}  sx={{ flexGrow: 1 }}>
     <AppBar style={{backgroundColor:'#6e84d0'}} position="static">
       <Toolbar>
         <IconButton

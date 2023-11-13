@@ -125,7 +125,7 @@ function Dashboard() {
             ) : (
               <div className={styles.name} onClick={() => handleDocumentClick(index)}>{doc.name}</div>
             )}
-            <div>
+            <div className={styles.icon}>
                <EditIcon fontSize='10px' onClick={() => handleEditButtonClick(index)}/>
                <DeleteOutlineIcon onClick={() => handleDeleteButtonClick(index)}/>
             </div>

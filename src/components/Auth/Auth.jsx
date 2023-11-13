@@ -83,7 +83,7 @@ function Auth({ register,setIsLoggedIn,setUserData,}) {
         navigate('/')
       }).catch((error) => {
 
-        console.log({ error });
+        console.error("Firebase authentication error:", error);
 
       });
   }
